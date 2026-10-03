@@ -1,7 +1,6 @@
 package tunyaa.currencyexchange.currency;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  *

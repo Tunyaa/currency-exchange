@@ -10,7 +10,7 @@ import tunyaa.currencyexchange.currency.Currency;
 public final class ExchangeRate {
 
     private final Long id;
-    private final Currency baseCurrency;
+    private final Currency baseCurrency;// TODO или сделать на id? 
     private final Currency targetCurrency;
     private final BigDecimal rate;
 

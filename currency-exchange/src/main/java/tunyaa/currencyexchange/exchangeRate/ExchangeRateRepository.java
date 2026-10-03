@@ -14,8 +14,8 @@ public interface ExchangeRateRepository {
 
     public Optional<ExchangeRate> findByPair(String baseCode, String targetCode);
 
-    public ExchangeRate save(String baseCode, String targetCode, BigDecimal rate);
+    public ExchangeRate save(ExchangeRate exchangeRate);
 
-    public ExchangeRate update(String baseCode, String targetCode, BigDecimal rate);
+    public ExchangeRate update(ExchangeRate exchangeRate);
 
 }
