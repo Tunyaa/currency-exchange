@@ -1,6 +1,7 @@
 package tunyaa.currencyexchange.exchangerate;
 
 import java.math.BigDecimal;
+import tunyaa.currencyexchange.currency.Currency;
 
 /**
  *
@@ -9,14 +10,14 @@ import java.math.BigDecimal;
 public final class ExchangeRate {
 
     private final Long id;
-    private final Long baseCurrencyId;
-    private final Long targetCurrencyId;
+    private final Currency baseCurrency;
+    private final Currency targetCurrency;
     private final BigDecimal rate;
 
-    public ExchangeRate(Long id, Long baseCurrencyId, Long targetCurrencyId, BigDecimal rate) {
+    public ExchangeRate(Long id, Currency baseCurrency, Currency targetCurrency, BigDecimal rate) {
         this.id = id;
-        this.baseCurrencyId = baseCurrencyId;
-        this.targetCurrencyId = targetCurrencyId;
+        this.baseCurrency = baseCurrency;
+        this.targetCurrency = targetCurrency;
         this.rate = rate;
     }
 
@@ -24,12 +25,12 @@ public final class ExchangeRate {
         return id;
     }
 
-    public Long getBaseCurrencyId() {
-        return baseCurrencyId;
+    public Currency getBaseCurrency() {
+        return baseCurrency;
     }
 
-    public Long getTargetCurrencyId() {
-        return targetCurrencyId;
+    public Currency getTargetCurrency() {
+        return targetCurrency;
     }
 
     public BigDecimal getRate() {
@@ -38,7 +39,7 @@ public final class ExchangeRate {
 
     @Override
     public String toString() {
-        return "ExchangeRate{" + "id=" + id + ", baseCurrencyId=" + baseCurrencyId + ", targetCurrencyId=" + targetCurrencyId + ", rate=" + rate + '}';
+        return "ExchangeRate{" + "id=" + id + ", baseCurrency=" + baseCurrency + ", targetCurrency=" + targetCurrency + ", rate=" + rate + '}';
     }
 
 }
