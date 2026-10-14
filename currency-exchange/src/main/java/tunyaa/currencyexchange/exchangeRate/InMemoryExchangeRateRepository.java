@@ -1,7 +1,12 @@
 package tunyaa.currencyexchange.exchangerate;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import tunyaa.currencyexchange.currency.Currency;
 
 /**
  *
@@ -9,24 +14,38 @@ import java.util.Optional;
  */
 public class InMemoryExchangeRateRepository implements ExchangeRateRepository {
 
+    private final Map<Long, ExchangeRate> storage = new HashMap<>();
+    private long nextId = 1L;
+
     @Override
     public List<ExchangeRate> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return new ArrayList(storage.values());
     }
 
     @Override
     public Optional<ExchangeRate> findByPair(String baseCode, String targetCode) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return storage.values().stream()
+                .filter(e -> e.getBaseCurrency().equals(baseCode) && e.getTargetCurrency().equals(targetCode))
+                .findFirst();
     }
 
     @Override
-    public ExchangeRate save(ExchangeRate exchangeRate) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ExchangeRate save(ExchangeRate exchangeRate) {//TODO поменять аргумент на DTO?
+        Long id = nextId++;
+        ExchangeRate exchangeRate1 = new ExchangeRate(id, exchangeRate.getBaseCurrency(), exchangeRate.getTargetCurrency(), exchangeRate.getRate());
+        
+        storage.put(id, exchangeRate1);
+        return exchangeRate1;//TODO испранить название 
     }
 
     @Override
-    public ExchangeRate update(ExchangeRate exchangeRate) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ExchangeRate update(ExchangeRate exchangeRate) {//TODO поменять на DTO 
+        Long id = exchangeRate.getId();
+        ExchangeRate get = storage.get(id);
+        ExchangeRate exchangeRate1 = 
+                new ExchangeRate(id, exchangeRate.getBaseCurrency(), exchangeRate.getTargetCurrency(), exchangeRate.getRate());
+        storage.put(id, exchangeRate1);
+        return exchangeRate1;
     }
 
 }

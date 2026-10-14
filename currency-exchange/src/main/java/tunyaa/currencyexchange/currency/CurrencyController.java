@@ -7,6 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import tunyaa.currencyexchange.common.AppContext;
+import tunyaa.currencyexchange.common.exception.CurrencyNotFoundException;
+import tunyaa.currencyexchange.common.util.JsonUtil;
 
 /**
  *
@@ -19,7 +23,7 @@ public class CurrencyController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-          String pathInfo = req.getPathInfo();   // "/EUR" или null
+        String pathInfo = req.getPathInfo();   // "/EUR" или null
 
         if (pathInfo == null || pathInfo.equals("/")) {
             List<Currency> all = AppContext.CURRENCY_SERVICE.getCurrencies();
@@ -35,7 +39,5 @@ public class CurrencyController extends HttpServlet {
             JsonUtil.write(resp, 404, Map.of("message", e.getMessage()));
         }
     }
-    
-    
-    
+
 }

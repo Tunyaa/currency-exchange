@@ -1,6 +1,7 @@
 package tunyaa.currencyexchange.currency;
 
 import java.util.List;
+import tunyaa.currencyexchange.common.exception.CurrencyNotFoundException;
 
 /**
  *
@@ -22,7 +23,7 @@ public class CurrencyService {
 
     public Currency getCurrency(String code) {
         return currencyRepository.findByCode(code)
-                .orElseThrow(() -> new RuntimeException("Currency not found: " + code));
+                .orElseThrow(() -> new CurrencyNotFoundException("Currency not found: " + code));
     }
 //POST /currencies  Добавление новой валюты в базу
 
