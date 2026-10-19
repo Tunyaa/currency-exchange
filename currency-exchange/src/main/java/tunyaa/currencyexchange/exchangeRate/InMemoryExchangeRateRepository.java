@@ -39,6 +39,15 @@ public class InMemoryExchangeRateRepository implements ExchangeRateRepository {
 
     @Override
     public ExchangeRate update(ExchangeRate exchangeRate) {//TODO поменять на DTO 
+        
+//         Long id = exchangeRate.getId();
+//    if (!storage.containsKey(id)) {
+//        // TODO: бросить исключение, когда появится ExchangeRateNotFoundException
+//        return null;
+//    }
+//    storage.put(id, exchangeRate);
+//    return exchangeRate;
+        
         Long id = exchangeRate.getId();
         ExchangeRate get = storage.get(id);
         ExchangeRate exchangeRate1
