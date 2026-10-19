@@ -23,7 +23,7 @@ public class CurrencyService {
 
     public Currency getCurrency(String code) {
         return currencyRepository.findByCode(code)
-                .orElseThrow(() -> new CurrencyNotFoundException("Currency not found: " + code));
+                .orElseThrow(() -> new CurrencyNotFoundException(code));
     }
 //POST /currencies  Добавление новой валюты в базу
 

@@ -25,15 +25,14 @@ public class InMemoryExchangeRateRepository implements ExchangeRateRepository {
     @Override
     public Optional<ExchangeRate> findByPair(String baseCode, String targetCode) {
         return storage.values().stream()
-                .filter(e -> e.getBaseCurrency().equals(baseCode) && e.getTargetCurrency().equals(targetCode))
-                .findFirst();
+                .filter(e -> e.getBaseCurrency().getCode().equals(baseCode) && e.getTargetCurrency().getCode().equals(targetCode)).findFirst();
     }
 
     @Override
     public ExchangeRate save(ExchangeRate exchangeRate) {//TODO поменять аргумент на DTO?
         Long id = nextId++;
         ExchangeRate exchangeRate1 = new ExchangeRate(id, exchangeRate.getBaseCurrency(), exchangeRate.getTargetCurrency(), exchangeRate.getRate());
-        
+
         storage.put(id, exchangeRate1);
         return exchangeRate1;//TODO испранить название 
     }
@@ -42,8 +41,8 @@ public class InMemoryExchangeRateRepository implements ExchangeRateRepository {
     public ExchangeRate update(ExchangeRate exchangeRate) {//TODO поменять на DTO 
         Long id = exchangeRate.getId();
         ExchangeRate get = storage.get(id);
-        ExchangeRate exchangeRate1 = 
-                new ExchangeRate(id, exchangeRate.getBaseCurrency(), exchangeRate.getTargetCurrency(), exchangeRate.getRate());
+        ExchangeRate exchangeRate1
+                = new ExchangeRate(id, exchangeRate.getBaseCurrency(), exchangeRate.getTargetCurrency(), exchangeRate.getRate());
         storage.put(id, exchangeRate1);
         return exchangeRate1;
     }

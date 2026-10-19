@@ -19,8 +19,6 @@ import tunyaa.currencyexchange.common.util.JsonUtil;
 @WebServlet("/currency/*")
 public class CurrencyController extends HttpServlet {
 
-    private final CurrencyService currencyService = new CurrencyService(new InMemoryCurrencyRepository());
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();   // "/EUR" или null
