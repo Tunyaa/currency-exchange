@@ -38,4 +38,23 @@ public class CurrencyController extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        CurrencyRequest request;
+        try {
+            request = JsonUtil.read(req.getReader(), CurrencyRequest.class);
+        } catch (IOException e) {
+            JsonUtil.write(resp, 400, Map.of("message", "Invalid JSON"));
+            return;
+        }
+
+        try {
+            Currency created = AppContext.CURRENCY_SERVICE.addCurrency(
+                    request.code(), request.fullName(), request.sign());
+            JsonUtil.write(resp, 201, created);
+        } catch (RuntimeException e) {
+            JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));
+        }
+    }
+
 }
