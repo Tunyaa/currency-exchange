@@ -31,7 +31,11 @@ public class InMemoryExchangeRateRepository implements ExchangeRateRepository {
     @Override
     public ExchangeRate save(ExchangeRate exchangeRate) {//TODO поменять аргумент на DTO?
         Long id = nextId++;
-        ExchangeRate exchangeRate1 = new ExchangeRate(id, exchangeRate.getBaseCurrency(), exchangeRate.getTargetCurrency(), exchangeRate.getRate());
+        ExchangeRate exchangeRate1 = new ExchangeRate(
+                id,
+                exchangeRate.getBaseCurrency(),
+                exchangeRate.getTargetCurrency(),
+                exchangeRate.getRate());
 
         storage.put(id, exchangeRate1);
         return exchangeRate1;//TODO испранить название 
@@ -39,7 +43,7 @@ public class InMemoryExchangeRateRepository implements ExchangeRateRepository {
 
     @Override
     public ExchangeRate update(ExchangeRate exchangeRate) {//TODO поменять на DTO 
-        
+
 //         Long id = exchangeRate.getId();
 //    if (!storage.containsKey(id)) {
 //        // TODO: бросить исключение, когда появится ExchangeRateNotFoundException
@@ -47,10 +51,9 @@ public class InMemoryExchangeRateRepository implements ExchangeRateRepository {
 //    }
 //    storage.put(id, exchangeRate);
 //    return exchangeRate;
-        
         Long id = exchangeRate.getId();
         ExchangeRate get = storage.get(id);
-        ExchangeRate exchangeRate1
+        ExchangeRate exchangeRate1// TODO поменять переменную или обойтись без неё
                 = new ExchangeRate(id, exchangeRate.getBaseCurrency(), exchangeRate.getTargetCurrency(), exchangeRate.getRate());
         storage.put(id, exchangeRate1);
         return exchangeRate1;

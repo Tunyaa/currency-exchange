@@ -19,7 +19,7 @@ public class AppContext {
     public static final CurrencyRepository CURRENCY_REPOSITORY
             = new InMemoryCurrencyRepository();
     public static final ExchangeRateRepository EXCHANGE_RATE_REPOSITORY
-            = new InMemoryExchangeRateRepository();
+            = new InMemoryExchangeRateRepository();// TODO убрать поле?
 
     public static final CurrencyService CURRENCY_SERVICE
             = new CurrencyService(CURRENCY_REPOSITORY);
