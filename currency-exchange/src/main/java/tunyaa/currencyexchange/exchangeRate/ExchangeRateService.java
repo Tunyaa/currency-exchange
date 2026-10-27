@@ -1,5 +1,6 @@
 package tunyaa.currencyexchange.exchangerate;
 
+import java.math.BigDecimal;
 import java.util.List;
 import tunyaa.currencyexchange.common.exception.CurrencyNotFoundException;
 import tunyaa.currencyexchange.currency.Currency;
@@ -31,13 +32,10 @@ public class ExchangeRateService {
     }
 
 //POST /exchangeRates  Добавление нового обменного курса в базу
-    public ExchangeRate addExchangeRate(ExchangeRateRequest exchangeRateRequest) {
-        String baseCode = exchangeRateRequest.baseCode();
-        String targetCode = exchangeRateRequest.targetCode();
+    public ExchangeRate addExchangeRate(String baseCode, String targetCode, BigDecimal rate) {
         Currency baseCurrency = currencyRepository.findByCode(baseCode).orElseThrow(() -> new CurrencyNotFoundException(baseCode));
         Currency targetCurrency = currencyRepository.findByCode(targetCode).orElseThrow(() -> new CurrencyNotFoundException(targetCode));
-        ExchangeRate exchangeRate = new ExchangeRate(baseCurrency, targetCurrency, exchangeRateRequest.rate());
-        // TODO переименовать
+        ExchangeRate exchangeRate = new ExchangeRate(baseCurrency, targetCurrency, rate);
         return exchangeRateRepository.save(exchangeRate);
     }
 
