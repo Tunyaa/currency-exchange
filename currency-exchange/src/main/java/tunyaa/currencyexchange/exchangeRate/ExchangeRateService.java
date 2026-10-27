@@ -31,12 +31,12 @@ public class ExchangeRateService {
     }
 
 //POST /exchangeRates  Добавление нового обменного курса в базу
-    public ExchangeRate addExchangeRate(ExchangeRate exchangeRate) {// TODO сделать DTO
-        String baseCode = exchangeRate.getBaseCurrency().getCode();
-        String targetCode = exchangeRate.getTargetCurrency().getCode();
+    public ExchangeRate addExchangeRate(ExchangeRateRequest exchangeRateRequest) {
+        String baseCode = exchangeRateRequest.baseCode();
+        String targetCode = exchangeRateRequest.targetCode();
         Currency baseCurrency = currencyRepository.findByCode(baseCode).orElseThrow(() -> new CurrencyNotFoundException(baseCode));
         Currency targetCurrency = currencyRepository.findByCode(targetCode).orElseThrow(() -> new CurrencyNotFoundException(targetCode));
-        exchangeRate = new ExchangeRate(baseCurrency, targetCurrency, exchangeRate.getRate());
+        ExchangeRate exchangeRate = new ExchangeRate(baseCurrency, targetCurrency, exchangeRateRequest.rate());
         // TODO переименовать
         return exchangeRateRepository.save(exchangeRate);
     }
