@@ -19,7 +19,7 @@ public class CurrencyListController extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        JsonUtil.write(resp, 200, AppContext.CURRENCY_SERVICE.getCurrencies());
+        JsonUtil.write(resp, 200, AppContext.CURRENCY_SERVICE.getCurrencies());// TODO название и порядок полей не соответствуют тз
     }
     
     @Override

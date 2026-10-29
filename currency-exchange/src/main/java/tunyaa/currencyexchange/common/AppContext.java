@@ -26,5 +26,5 @@ public class AppContext {
     public static final ExchangeRateService EXCHANGE_RATE_SERVICE
             = new ExchangeRateService(EXCHANGE_RATE_REPOSITORY, CURRENCY_REPOSITORY);
     public static final ExchangeService EXCHANGE_SERVICE
-            = new ExchangeService(EXCHANGE_RATE_REPOSITORY, new FindCoefficient(), new Exchange());
+            = new ExchangeService(EXCHANGE_RATE_REPOSITORY, CURRENCY_REPOSITORY, new FindCoefficient(), new Exchange());
 }
