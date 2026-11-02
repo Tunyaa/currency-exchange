@@ -33,7 +33,7 @@ public class CurrencyListController extends HttpServlet {
             return;
         }
         try {
-            Currency created = AppContext.CURRENCY_SERVICE.addCurrency(request.code(), request.fullName(), request.sign());
+            Currency created = AppContext.CURRENCY_SERVICE.addCurrency(request.name(), request.code(), request.sign());
             JsonUtil.write(resp, 201, created);
         } catch (RuntimeException e) {
             JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));

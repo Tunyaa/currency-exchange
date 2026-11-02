@@ -28,9 +28,9 @@ public class InMemoryCurrencyRepository implements CurrencyRepository {
     }
 
     @Override
-    public Currency save(String code, String fullName, String sign) {
+    public Currency save(String name, String code, String sign) {
         Long id = nextId++;
-        Currency currency = new Currency(id, code, fullName, sign);
+        Currency currency = new Currency(id, name, code, sign);
         storage.put(id, currency);
         return currency;
     }

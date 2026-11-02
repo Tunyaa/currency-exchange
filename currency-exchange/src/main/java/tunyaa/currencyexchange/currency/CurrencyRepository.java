@@ -13,6 +13,6 @@ public interface CurrencyRepository {
 
     public Optional<Currency> findByCode(String code);
 
-    public Currency save(String code, String fullName, String sign);
+    public Currency save(String  name, String code, String sign);
     
 }

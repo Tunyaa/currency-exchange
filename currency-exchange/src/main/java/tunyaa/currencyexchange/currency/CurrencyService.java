@@ -27,7 +27,7 @@ public class CurrencyService {
     }
 //POST /currencies  Добавление новой валюты в базу
 
-    public Currency addCurrency(String code, String fullName, String sign) {
-        return currencyRepository.save(code, fullName, sign);
+    public Currency addCurrency(String name, String code, String sign) {
+        return currencyRepository.save(name, code, sign);
     }
 }

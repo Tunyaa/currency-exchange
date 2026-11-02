@@ -7,14 +7,14 @@ package tunyaa.currencyexchange.currency;
 public final class Currency {
 
     private final Long id;
+    private final String name;
     private final String code;
-    private final String fullName;
     private final String sign;
 
-    public Currency(Long id, String code, String fullName, String sign) {
+    public Currency(Long id, String name, String code, String sign) {
         this.id = id;
+        this.name = name;
         this.code = code;
-        this.fullName = fullName;
         this.sign = sign;
     }
 
@@ -22,12 +22,12 @@ public final class Currency {
         return id;
     }
 
-    public String getCode() {
-        return code;
+    public String getName() {
+        return name;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getCode() {
+        return code;
     }
 
     public String getSign() {
@@ -36,7 +36,7 @@ public final class Currency {
 
     @Override
     public String toString() {
-        return "Currency{" + "id=" + id + ", code=" + code + ", fullName=" + fullName + ", sign=" + sign + '}';
+        return "Currency{" + "id=" + id + ", name=" + name + ", code=" + code + ", sign=" + sign + '}';
     }
 
 }
