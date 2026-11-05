@@ -3,6 +3,7 @@ package tunyaa.currencyexchange.exchangerate;
 import java.math.BigDecimal;
 import java.util.List;
 import tunyaa.currencyexchange.common.exception.CurrencyNotFoundException;
+import tunyaa.currencyexchange.common.exception.ExchangeRateNotFoundException;
 import tunyaa.currencyexchange.currency.Currency;
 import tunyaa.currencyexchange.currency.CurrencyRepository;
 
@@ -28,7 +29,7 @@ public class ExchangeRateService {
 //GET /exchangeRate/USD&RUB  Получение конкретного обменного курса
     public ExchangeRate getExchangeRate(String baseCode, String targetCode) {
         return exchangeRateRepository.findByPair(baseCode, targetCode)
-                .orElseThrow(() -> new RuntimeException("ExchangeRate not found! " + baseCode + " - " + targetCode + "."));
+                .orElseThrow(() -> new ExchangeRateNotFoundException("ExchangeRate not found! " + baseCode + " - " + targetCode + "."));
     }
 
 //POST /exchangeRates  Добавление нового обменного курса в базу
@@ -40,16 +41,16 @@ public class ExchangeRateService {
     }
 
 //PATCH /exchangeRate/USDRUB  Обновление существующего в базе обменного курса
-    public ExchangeRate updateExchangeRate(ExchangeRate exchangeRate) {// TODO сделать DTO
+    public ExchangeRate updateExchangeRate(String baseCode, String targetCode, BigDecimal rate) {
         ExchangeRate existing = getExchangeRate(
-                exchangeRate.getBaseCurrency().getCode(),
-                exchangeRate.getTargetCurrency().getCode());
+                baseCode,
+                targetCode);
 
         ExchangeRate updated = new ExchangeRate(
                 existing.getId(),
                 existing.getBaseCurrency(),
                 existing.getTargetCurrency(),
-                exchangeRate.getRate());
+                rate);
 
         return exchangeRateRepository.update(updated);
     }
