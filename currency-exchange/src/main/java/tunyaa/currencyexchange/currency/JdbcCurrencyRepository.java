@@ -45,12 +45,28 @@ public class JdbcCurrencyRepository implements CurrencyRepository {
 
     @Override
     public Optional<Currency> findByCode(String code) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "SELECT id, code, name, sign FROM currencies WHERE code = ?";
+
+        try (Connection connection = DriverManager.getConnection(URL);
+                PreparedStatement statement = connection.prepareStatement(sql);) {
+
+            statement.setString(1, code);
+            try (ResultSet resultSet = statement.executeQuery();) {
+                if (resultSet.next()) {
+                    return Optional.of(mapRow(resultSet));
+                }
+                return Optional.empty();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find currency by code: " + code, e);
+        }
     }
 
     @Override
-    public Currency save(String name, String code, String sign) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Currency save(String name, String code, String sign){
+        return null;
     }
+    
 
 }
