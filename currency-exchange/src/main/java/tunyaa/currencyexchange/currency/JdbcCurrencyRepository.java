@@ -47,11 +47,10 @@ public class JdbcCurrencyRepository implements CurrencyRepository {
     public Optional<Currency> findByCode(String code) {
         String sql = "SELECT id, code, name, sign FROM currencies WHERE code = ?";
 
-        try (Connection connection = DriverManager.getConnection(URL);
-                PreparedStatement statement = connection.prepareStatement(sql);) {
+        try (Connection connection = DriverManager.getConnection(URL); PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, code);
-            try (ResultSet resultSet = statement.executeQuery();) {
+            try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return Optional.of(mapRow(resultSet));
                 }
@@ -64,9 +63,27 @@ public class JdbcCurrencyRepository implements CurrencyRepository {
     }
 
     @Override
-    public Currency save(String name, String code, String sign){
-        return null;
+    public Currency save(String name, String code, String sign) {
+        String sql = "INSERT INTO currencies (name, code, sign) VALUES (?, ?, ?)";
+
+        try (Connection connection = DriverManager.getConnection(URL); PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            statement.setString(1, name);
+            statement.setString(2, code);
+            statement.setString(3, sign);
+            statement.executeUpdate();
+
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    long id = resultSet.getLong(1);
+                    return new Currency(id, name, code, sign);
+                }
+                throw new RuntimeException("No ID returned after INSERT");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to save currency: " + code, e);
+        }
     }
-    
 
 }

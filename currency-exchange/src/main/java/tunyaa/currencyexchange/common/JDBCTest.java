@@ -17,17 +17,24 @@ public class JDBCTest {
 
     public static void main(String[] args) {
 
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:exchange.db"); Statement stmt = conn.createStatement()) {
-            stmt.execute("INSERT OR IGNORE INTO currencies (code, name, sign) VALUES ('USD', 'US Dollar', '$')");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         CurrencyRepository repo = new JdbcCurrencyRepository();
-        List<Currency> all = repo.findAll();
-        System.out.println("Count: " + all.size());
-        for (Currency c : all) {
-            System.out.println(c);
-        }
+//
+//        Currency created = repo.save("Euro", "EUR", "€");
+//        System.out.println("Created: " + created);
+//
+//        Currency created2 = repo.save("British Pound", "GBP", "£");
+//        System.out.println("Created: " + created2);
+
+        System.out.println("EUR: " + repo.findByCode("EUR"));
+        System.out.println("GBP: " + repo.findByCode("GBP"));
+        System.out.println("USD: " + repo.findByCode("USD"));
+
+        
+        try {
+    repo.save("US Dollar Again", "USD", "$");
+    System.out.println("BUG: duplicate allowed!");
+} catch (RuntimeException e) {
+    System.out.println("OK: duplicate rejected: " + e.getCause().getMessage());
+}
     }
 }
