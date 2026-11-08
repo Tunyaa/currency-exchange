@@ -13,6 +13,7 @@ import tunyaa.currencyexchange.currency.JdbcCurrencyRepository;
  *
  * @author oldca
  */
+// TODO ТЕстовый класс. УДАЛИТЬ!!!
 public class JDBCTest {
 
     public static void main(String[] args) {

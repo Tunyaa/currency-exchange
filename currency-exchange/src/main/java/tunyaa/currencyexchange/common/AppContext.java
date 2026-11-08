@@ -3,6 +3,7 @@ package tunyaa.currencyexchange.common;
 import tunyaa.currencyexchange.currency.CurrencyRepository;
 import tunyaa.currencyexchange.currency.CurrencyService;
 import tunyaa.currencyexchange.currency.InMemoryCurrencyRepository;
+import tunyaa.currencyexchange.currency.JdbcCurrencyRepository;
 import tunyaa.currencyexchange.exchange.Exchange;
 import tunyaa.currencyexchange.exchange.ExchangeService;
 import tunyaa.currencyexchange.exchangerate.ExchangeRateRepository;
@@ -17,7 +18,8 @@ import tunyaa.currencyexchange.findcoefficient.FindCoefficient;
 public class AppContext {
 
     public static final CurrencyRepository CURRENCY_REPOSITORY
-            = new InMemoryCurrencyRepository();
+            //            = new InMemoryCurrencyRepository();
+            = new JdbcCurrencyRepository();
     public static final ExchangeRateRepository EXCHANGE_RATE_REPOSITORY
             = new InMemoryExchangeRateRepository();// TODO убрать поле?
 
