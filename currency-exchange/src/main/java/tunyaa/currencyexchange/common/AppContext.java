@@ -9,6 +9,7 @@ import tunyaa.currencyexchange.exchange.ExchangeService;
 import tunyaa.currencyexchange.exchangerate.ExchangeRateRepository;
 import tunyaa.currencyexchange.exchangerate.ExchangeRateService;
 import tunyaa.currencyexchange.exchangerate.InMemoryExchangeRateRepository;
+import tunyaa.currencyexchange.exchangerate.JdbcExchangeRateRepository;
 import tunyaa.currencyexchange.findcoefficient.FindCoefficient;
 
 /**
@@ -21,7 +22,8 @@ public class AppContext {
             //            = new InMemoryCurrencyRepository();
             = new JdbcCurrencyRepository();
     public static final ExchangeRateRepository EXCHANGE_RATE_REPOSITORY
-            = new InMemoryExchangeRateRepository();// TODO убрать поле?
+            //            = new InMemoryExchangeRateRepository();// TODO убрать поле?
+            = new JdbcExchangeRateRepository();// TODO убрать поле?
 
     public static final CurrencyService CURRENCY_SERVICE
             = new CurrencyService(CURRENCY_REPOSITORY);
