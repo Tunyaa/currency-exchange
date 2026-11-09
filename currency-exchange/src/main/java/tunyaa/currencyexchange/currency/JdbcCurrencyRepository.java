@@ -34,6 +34,7 @@ public class JdbcCurrencyRepository implements CurrencyRepository {
         return result;
     }
 
+    // TODO ПЕРЕНЕСТИ?
     private Currency mapRow(ResultSet rs) throws SQLException {
         return new Currency(
                 rs.getLong("id"),
