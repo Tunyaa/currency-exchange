@@ -1,11 +1,13 @@
 package tunyaa.currencyexchange.exchangerate;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import tunyaa.currencyexchange.currency.Currency;
@@ -20,7 +22,38 @@ public class JdbcExchangeRateRepository implements ExchangeRateRepository {
 
     @Override
     public List<ExchangeRate> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = """
+                     SELECT 
+                                 er.id AS rate_id,
+                                 er.rate AS rate,
+                                 bc.id AS base_id,
+                                 bc.name AS base_name,
+                                 bc.code AS base_code,
+                                 bc.sign AS base_sign,
+                                 tc.id AS target_id,
+                                 tc.name AS target_name,
+                                 tc.code AS target_code,
+                                 tc.sign AS target_sign
+                             FROM exchange_rates er
+                             JOIN currencies bc ON er.base_currency_id = bc.id
+                             JOIN currencies tc ON er.target_currency_id = tc.id
+                             ORDER BY er.id
+                             """;
+
+        try (Connection connection = DriverManager.getConnection(URL); 
+                PreparedStatement statement = connection.prepareStatement(sql); 
+                ResultSet resultSet = statement.executeQuery()) {
+            
+            List<ExchangeRate> allExchangeRates = new ArrayList<>();
+            
+            while (resultSet.next()) {
+                allExchangeRates.add(mapRow(resultSet));
+            }
+            return allExchangeRates;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find exchange rates", e);
+        }
     }
 
     @Override

@@ -23,7 +23,7 @@ public class AppContext {
             = new JdbcCurrencyRepository();
     public static final ExchangeRateRepository EXCHANGE_RATE_REPOSITORY
             //            = new InMemoryExchangeRateRepository();// TODO убрать поле?
-            = new JdbcExchangeRateRepository();// TODO убрать поле?
+            = new JdbcExchangeRateRepository();
 
     public static final CurrencyService CURRENCY_SERVICE
             = new CurrencyService(CURRENCY_REPOSITORY);
