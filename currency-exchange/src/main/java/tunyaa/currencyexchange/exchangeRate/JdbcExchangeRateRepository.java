@@ -40,12 +40,10 @@ public class JdbcExchangeRateRepository implements ExchangeRateRepository {
                              ORDER BY er.id
                              """;
 
-        try (Connection connection = DriverManager.getConnection(URL); 
-                PreparedStatement statement = connection.prepareStatement(sql); 
-                ResultSet resultSet = statement.executeQuery()) {
-            
+        try (Connection connection = DriverManager.getConnection(URL); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
+
             List<ExchangeRate> allExchangeRates = new ArrayList<>();
-            
+
             while (resultSet.next()) {
                 allExchangeRates.add(mapRow(resultSet));
             }
@@ -125,7 +123,23 @@ public class JdbcExchangeRateRepository implements ExchangeRateRepository {
 
     @Override
     public ExchangeRate update(ExchangeRate exchangeRate) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "UPDATE exchange_rates SET rate = ? WHERE id = ?";
+
+        try (Connection connection = DriverManager.getConnection(URL); PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setBigDecimal(1, exchangeRate.getRate());
+            statement.setLong(2, exchangeRate.getId());
+
+            int updated = statement.executeUpdate();
+
+            if (updated == 0) {
+                throw new RuntimeException("Exchange rate with id " + exchangeRate.getId() + " not found");
+            }
+            return exchangeRate;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to update exchange rate: " + exchangeRate.getId(), e);
+        }
     }
 
     private ExchangeRate mapRow(ResultSet rs) throws SQLException {
