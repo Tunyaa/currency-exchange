@@ -19,7 +19,7 @@ import tunyaa.currencyexchange.common.util.JsonUtil;
  */
 @WebServlet("/exchangeRate/*")
 public class ExchangeRatePairController extends HttpServlet {
-
+// TODO отрицательный курс и курс 0
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();

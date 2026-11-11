@@ -16,6 +16,7 @@ import tunyaa.currencyexchange.common.util.JsonUtil;
  *
  * @author oldca
  */
+// TODO Отрицательная сумма: amount=-100 — проходит? Результат отрицательный? 
 @WebServlet("/exchange")
 public class ExchangeController extends HttpServlet {
 
