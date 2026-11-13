@@ -52,22 +52,62 @@ public class FindCoefficient {
 
     private BigDecimal findTransit(List<ExchangeRate> rates, String from, String to) {
         for (ExchangeRate first : rates) {
-            if (!first.getBaseCurrency().getCode().equals(from)) {
-                continue;
+            if (first.getBaseCurrency().getCode().equals(from)) {
+                String middle = first.getTargetCurrency().getCode();
+
+                for (ExchangeRate second : rates) {
+                    if (second.getBaseCurrency().getCode().equals(middle)
+                            && second.getTargetCurrency().getCode().equals(to)) {
+                        return first.getRate()
+                                .multiply(second.getRate())
+                                .setScale(6, RoundingMode.HALF_UP);
+                    }
+                    if (second.getTargetCurrency().getCode().equals(middle)
+                            && second.getBaseCurrency().getCode().equals(to)) {
+                        return first.getRate().divide(second.getRate(), 6, RoundingMode.HALF_UP);
+                    }
+                }
             }
-            String middle = first.getTargetCurrency().getCode();
+            if (first.getTargetCurrency().getCode().equals(from)) {
+                String middle = first.getBaseCurrency().getCode();
 
-            for (ExchangeRate second : rates) {
-                if (!second.getBaseCurrency().getCode().equals(middle)) {
-                    continue;
+                for (ExchangeRate second : rates) {
+                    if (second.getBaseCurrency().getCode().equals(middle)
+                            && second.getTargetCurrency().getCode().equals(to)) {
+                        return second.getRate().divide(first.getRate(), 6, RoundingMode.HALF_UP);
+                    }
+                    if (second.getTargetCurrency().getCode().equals(middle)
+                            && second.getBaseCurrency().getCode().equals(to)) {
+                        return BigDecimal.ONE.divide(
+                                first.getRate().multiply(second.getRate()),
+                                6,
+                                RoundingMode.HALF_UP
+                        );
+                    }
                 }
-                if (!second.getTargetCurrency().getCode().equals(to)) {
-                    continue;
-                }
-
-                return first.getRate().multiply(second.getRate());
             }
         }
-        return null;
+        throw new RateNotFoundException(from, to);
+
     }
+//    private BigDecimal findTransit(List<ExchangeRate> rates, String from, String to) {
+//        for (ExchangeRate first : rates) {
+//            if (!first.getBaseCurrency().getCode().equals(from)) {
+//                continue;
+//            }
+//            String middle = first.getTargetCurrency().getCode();
+//
+//            for (ExchangeRate second : rates) {
+//                if (!second.getBaseCurrency().getCode().equals(middle)) {
+//                    continue;
+//                }
+//                if (!second.getTargetCurrency().getCode().equals(to)) {
+//                    continue;
+//                }
+//
+//                return first.getRate().multiply(second.getRate());
+//            }
+//        }
+//        return null;
+//    }
 }
