@@ -3,10 +3,6 @@ package tunyaa.currencyexchange.currency;
 import java.util.List;
 import tunyaa.currencyexchange.common.exception.CurrencyNotFoundException;
 
-/**
- *
- * @author oldca
- */
 public class CurrencyService {
 
     private final CurrencyRepository currencyRepository;
@@ -15,7 +11,7 @@ public class CurrencyService {
         this.currencyRepository = currencyRepository;
     }
 
-//    GET /currencies Получение списка валют
+//GET /currencies Получение списка валют
     public List<Currency> getCurrencies() {
         return currencyRepository.findAll();
     }
@@ -28,6 +24,18 @@ public class CurrencyService {
 //POST /currencies  Добавление новой валюты в базу
 
     public Currency addCurrency(String name, String code, String sign) {
-        return currencyRepository.save(name, code, sign);
+        if (сheckCurrencyField(name, code, sign)) {
+            return currencyRepository.save(name, code, sign);
+        }
+        throw new RuntimeException("Fields cannot be empty");
+    }
+
+    private boolean сheckCurrencyField(String... str) {
+        for (String string : str) {
+            if (string == null || string.isBlank()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
