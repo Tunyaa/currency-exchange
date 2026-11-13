@@ -24,13 +24,13 @@ public class CurrencyService {
 //POST /currencies  Добавление новой валюты в базу
 
     public Currency addCurrency(String name, String code, String sign) {
-        if (сheckCurrencyField(name, code, sign)) {
+        if (checkCurrencyField(name, code, sign)) {
             return currencyRepository.save(name, code, sign);
         }
-        throw new RuntimeException("Fields cannot be empty");
+        throw new IllegalArgumentException("Currency fields cannot be empty");// TODO проверить
     }
 
-    private boolean сheckCurrencyField(String... str) {
+    private boolean checkCurrencyField(String... str) {
         for (String string : str) {
             if (string == null || string.isBlank()) {
                 return false;

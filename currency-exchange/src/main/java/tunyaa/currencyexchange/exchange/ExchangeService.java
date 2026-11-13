@@ -30,6 +30,10 @@ public class ExchangeService {
     }
 
     public ExchangeResponse exchange(BigDecimal amount, String from, String to) {
+        if (!checkExchangeField(amount)) {
+            throw new IllegalArgumentException("Amount cannot be 0 or negative.");
+        }
+
         List<ExchangeRate> rates = exchangeRateRepository.findAll();
         BigDecimal coef = findCoefficient.find(rates, from, to);
         BigDecimal convertedAmount = exchange.calculate(amount, coef);
@@ -40,5 +44,12 @@ public class ExchangeService {
                 .orElseThrow(() -> new CurrencyNotFoundException(to));
 
         return new ExchangeResponse(baseCurrency, targetCurrency, coef, amount, convertedAmount);
+    }
+
+    private boolean checkExchangeField(BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            return false;
+        }
+        return true;
     }
 }
