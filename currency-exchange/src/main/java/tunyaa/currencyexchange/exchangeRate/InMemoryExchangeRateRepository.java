@@ -46,7 +46,7 @@ public class InMemoryExchangeRateRepository implements ExchangeRateRepository {
 
 //         Long id = exchangeRate.getId();
 //    if (!storage.containsKey(id)) {
-//        // TODO: бросить исключение, когда появится ExchangeRateNotFoundException
+//        //  бросить исключение, когда появится ExchangeRateNotFoundException
 //        return null;
 //    }
 //    storage.put(id, exchangeRate);

@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import tunyaa.currencyexchange.common.exception.DuplicateException;
 import tunyaa.currencyexchange.currency.Currency;
 
 /**
@@ -117,6 +118,12 @@ public class JdbcExchangeRateRepository implements ExchangeRateRepository {
             }
 
         } catch (SQLException e) {
+            if (e.getMessage().contains("UNIQUE constraint")) {
+                throw new DuplicateException("Exchange rate already exists: "
+                        + exchangeRate.getBaseCurrency().getCode()
+                        + " -> "
+                        + exchangeRate.getTargetCurrency().getCode());
+            }
             throw new RuntimeException("Failed to save exchange rate", e);
         }
     }

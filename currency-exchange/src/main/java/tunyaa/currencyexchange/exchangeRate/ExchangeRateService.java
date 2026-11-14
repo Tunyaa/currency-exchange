@@ -35,7 +35,7 @@ public class ExchangeRateService {
 //POST /exchangeRates  Добавление нового обменного курса в базу
     public ExchangeRate addExchangeRate(String baseCode, String targetCode, BigDecimal rate) {
         if (rate == null || rate.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RuntimeException("Rate must be positive");// TODO протестировать
+            throw new RuntimeException("Rate must be positive");
         }
         Currency baseCurrency = currencyRepository.findByCode(baseCode).orElseThrow(() -> new CurrencyNotFoundException(baseCode));
         Currency targetCurrency = currencyRepository.findByCode(targetCode).orElseThrow(() -> new CurrencyNotFoundException(targetCode));
@@ -46,7 +46,7 @@ public class ExchangeRateService {
 //PATCH /exchangeRate/USDRUB  Обновление существующего в базе обменного курса
     public ExchangeRate updateExchangeRate(String baseCode, String targetCode, BigDecimal rate) {
         if (rate == null || rate.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RuntimeException("Rate must be positive");// TODO Проверить 
+            throw new RuntimeException("Rate must be positive");
         }
         ExchangeRate existing = getExchangeRate(
                 baseCode,

@@ -18,44 +18,40 @@ public class ExchangeRatePairController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getPathInfo();
-
-        if (pathInfo == null || pathInfo.equals("/")) {
-            JsonUtil.write(resp, 400, Map.of("message", "Pair required"));
-            return;
-        }
-
-        String pair = pathInfo.substring(1);
-
-        if (pair.length() != 6) {
-            JsonUtil.write(resp, 400, Map.of("message", "Pair must be 6 chars, e.g. USDRUB"));
-            return;
-        }
-
-        String baseCode = pair.substring(0, 3);
-        String targetCode = pair.substring(3);
+        String baseCode;
+        String targetCode;
 
         try {
+            String[] pair = parsePair(req.getPathInfo());
+            baseCode = pair[0];
+            targetCode = pair[1];
             ExchangeRate rate = AppContext.EXCHANGE_RATE_SERVICE
                     .getExchangeRate(baseCode, targetCode);
             JsonUtil.write(resp, 200, rate);
         } catch (ExchangeRateNotFoundException e) {
             JsonUtil.write(resp, 404, Map.of("message", e.getMessage()));
+        } catch (IllegalArgumentException e) {
+            JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));
         }
     }
 
     @Override
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String[] pair = parsePair(req.getPathInfo());
 
-        String baseCode = pair[0];
-        String targetCode = pair[1];
+        String baseCode;
+        String targetCode;
 
         ExchangeRateUpdateRequest request;
         try {
+            String[] pair = parsePair(req.getPathInfo());
+            baseCode = pair[0];
+            targetCode = pair[1];
             request = JsonUtil.read(req.getReader(), ExchangeRateUpdateRequest.class);
         } catch (IOException e) {
             JsonUtil.write(resp, 400, Map.of("message", "Invalid JSON"));
+            return;
+        } catch (IllegalArgumentException e) {
+            JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));
             return;
         }
         BigDecimal rate = request.rate();

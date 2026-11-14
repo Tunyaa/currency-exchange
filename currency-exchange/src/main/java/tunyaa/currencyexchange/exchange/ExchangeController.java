@@ -12,11 +12,6 @@ import tunyaa.currencyexchange.common.AppContext;
 import tunyaa.currencyexchange.common.exception.RateNotFoundException;
 import tunyaa.currencyexchange.common.util.JsonUtil;
 
-/**
- *
- * @author oldca
- */
-// TODO Отрицательная сумма: amount=-100 — проходит? Результат отрицательный? 
 @WebServlet("/exchange")
 public class ExchangeController extends HttpServlet {
 
@@ -39,7 +34,7 @@ public class ExchangeController extends HttpServlet {
         } catch (NumberFormatException e) {
             JsonUtil.write(resp, 400, Map.of("message", "Invalid amount"));
         } catch (IllegalArgumentException e) {
-            JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));// TODO проверить 
+            JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));
         } catch (RateNotFoundException e) {
             JsonUtil.write(resp, 404, Map.of("message", e.getMessage()));
         }

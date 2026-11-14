@@ -85,7 +85,7 @@ public class JdbcCurrencyRepository implements CurrencyRepository {
 
         } catch (SQLException e) {
             if (e.getMessage().contains("UNIQUE constraint")) {
-                throw new DuplicateException("Currency already exists: " + code);// TODO проверить 
+                throw new DuplicateException("Currency already exists: " + code);
             }
             throw new RuntimeException("Failed to save currency: " + code, e);
         }
