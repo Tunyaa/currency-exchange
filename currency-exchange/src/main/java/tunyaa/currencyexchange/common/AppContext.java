@@ -10,7 +10,7 @@ import tunyaa.currencyexchange.exchangerate.ExchangeRateRepository;
 import tunyaa.currencyexchange.exchangerate.ExchangeRateService;
 import tunyaa.currencyexchange.exchangerate.InMemoryExchangeRateRepository;
 import tunyaa.currencyexchange.exchangerate.JdbcExchangeRateRepository;
-import tunyaa.currencyexchange.findcoefficient.FindCoefficient;
+import tunyaa.currencyexchange.exchange.findcoefficient.FindCoefficient;
 
 /**
  *

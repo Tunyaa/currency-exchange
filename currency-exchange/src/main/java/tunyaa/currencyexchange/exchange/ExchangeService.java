@@ -2,19 +2,13 @@ package tunyaa.currencyexchange.exchange;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
-import tunyaa.currencyexchange.common.AppContext;
 import tunyaa.currencyexchange.common.exception.CurrencyNotFoundException;
 import tunyaa.currencyexchange.currency.Currency;
 import tunyaa.currencyexchange.currency.CurrencyRepository;
 import tunyaa.currencyexchange.exchangerate.ExchangeRate;
 import tunyaa.currencyexchange.exchangerate.ExchangeRateRepository;
-import tunyaa.currencyexchange.findcoefficient.FindCoefficient;
+import tunyaa.currencyexchange.exchange.findcoefficient.FindCoefficient;
 
-/**
- *
- * @author oldca
- */
 public class ExchangeService {
 
     private final ExchangeRateRepository exchangeRateRepository;
@@ -30,8 +24,11 @@ public class ExchangeService {
     }
 
     public ExchangeResponse exchange(BigDecimal amount, String from, String to) {
-        if (!checkExchangeField(amount)) {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Amount cannot be 0 or negative.");
+        }
+        if (from.equals(to)) {
+            throw new IllegalArgumentException("Cannot exchange currency to itself");
         }
 
         List<ExchangeRate> rates = exchangeRateRepository.findAll();
@@ -46,10 +43,4 @@ public class ExchangeService {
         return new ExchangeResponse(baseCurrency, targetCurrency, coef, amount, convertedAmount);
     }
 
-    private boolean checkExchangeField(BigDecimal amount) {
-        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            return false;
-        }
-        return true;
-    }
 }

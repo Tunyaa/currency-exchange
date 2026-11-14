@@ -38,6 +38,8 @@ public class ExchangeController extends HttpServlet {
             return;
         } catch (NumberFormatException e) {
             JsonUtil.write(resp, 400, Map.of("message", "Invalid amount"));
+        } catch (IllegalArgumentException e) {
+            JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));// TODO проверить 
         } catch (RateNotFoundException e) {
             JsonUtil.write(resp, 404, Map.of("message", e.getMessage()));
         }

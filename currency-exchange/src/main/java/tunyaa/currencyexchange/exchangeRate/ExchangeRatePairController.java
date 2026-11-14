@@ -46,22 +46,10 @@ public class ExchangeRatePairController extends HttpServlet {
 
     @Override
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getPathInfo();// TODO Блок повторяется. вынести вметод?
+        String[] pair = parsePair(req.getPathInfo());
 
-        if (pathInfo == null || pathInfo.equals("/")) {
-            JsonUtil.write(resp, 400, Map.of("message", "Pair required"));
-            return;
-        }
-
-        String pair = pathInfo.substring(1);
-
-        if (pair.length() != 6) {
-            JsonUtil.write(resp, 400, Map.of("message", "Pair must be 6 chars, e.g. USDRUB"));
-            return;
-        }
-
-        String baseCode = pair.substring(0, 3);
-        String targetCode = pair.substring(3);
+        String baseCode = pair[0];
+        String targetCode = pair[1];
 
         ExchangeRateUpdateRequest request;
         try {
@@ -75,12 +63,32 @@ public class ExchangeRatePairController extends HttpServlet {
         try {
             ExchangeRate updateExchangeRate = AppContext.EXCHANGE_RATE_SERVICE.updateExchangeRate(baseCode, targetCode, rate);
             JsonUtil.write(resp, 200, updateExchangeRate);
+        } catch (IllegalArgumentException e) {
+            JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));
         } catch (ExchangeRateNotFoundException e) {
             JsonUtil.write(resp, 404, Map.of("message", e.getMessage()));
         } catch (RuntimeException e) {
             JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));
         }
 
+    }
+
+    private String[] parsePair(String pathInfo) {
+        String[] codes = new String[2];
+
+        if (pathInfo == null || pathInfo.equals("/")) {
+            throw new IllegalArgumentException("Pair required");
+        }
+
+        String pair = pathInfo.substring(1);
+
+        if (pair.length() != 6) {
+            throw new IllegalArgumentException("Pair must be 6 chars, e.g. USDRUB");
+        }
+
+        codes[0] = pair.substring(0, 3);
+        codes[1] = pair.substring(3);
+        return codes;
     }
 
 }

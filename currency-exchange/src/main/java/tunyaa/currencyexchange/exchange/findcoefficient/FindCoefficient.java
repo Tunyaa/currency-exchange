@@ -1,4 +1,4 @@
-package tunyaa.currencyexchange.findcoefficient;
+package tunyaa.currencyexchange.exchange.findcoefficient;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
