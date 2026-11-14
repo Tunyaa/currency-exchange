@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import tunyaa.currencyexchange.common.exception.DuplicateException;
 
 /**
  *
@@ -83,6 +84,9 @@ public class JdbcCurrencyRepository implements CurrencyRepository {
             }
 
         } catch (SQLException e) {
+            if (e.getMessage().contains("UNIQUE constraint")) {
+                throw new DuplicateException("Currency already exists: " + code);// TODO проверить 
+            }
             throw new RuntimeException("Failed to save currency: " + code, e);
         }
     }
