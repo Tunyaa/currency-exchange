@@ -13,13 +13,9 @@ import tunyaa.currencyexchange.common.exception.ExchangeRateNotFoundException;
 import tunyaa.currencyexchange.common.exception.RateNotFoundException;
 import tunyaa.currencyexchange.common.util.JsonUtil;
 
-/**
- *
- * @author oldca
- */
 @WebServlet("/exchangeRate/*")
 public class ExchangeRatePairController extends HttpServlet {
-// TODO отрицательный курс и курс 0
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
@@ -43,7 +39,7 @@ public class ExchangeRatePairController extends HttpServlet {
             ExchangeRate rate = AppContext.EXCHANGE_RATE_SERVICE
                     .getExchangeRate(baseCode, targetCode);
             JsonUtil.write(resp, 200, rate);
-        } catch (RuntimeException e) {// TODO заменить на ExchangeRateNotFoundException
+        } catch (ExchangeRateNotFoundException e) {
             JsonUtil.write(resp, 404, Map.of("message", e.getMessage()));
         }
     }
