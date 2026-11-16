@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Map;
 import tunyaa.currencyexchange.common.AppContext;
 import tunyaa.currencyexchange.common.exception.DuplicateException;
@@ -25,17 +26,15 @@ public class ExchangeRateController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ExchangeRateRequest request;
-        try {
-            request = JsonUtil.read(req.getReader(), ExchangeRateRequest.class);
-        } catch (IOException e) {
-            JsonUtil.write(resp, 400, Map.of("message", "Invalid JSON"));
-            return;
-        }
+        String baseCurrencyCode = req.getParameter("baseCurrencyCode");
+        String targetCurrencyCode = req.getParameter("targetCurrencyCode");
+        String rate = req.getParameter("rate");
 
         try {
-            ExchangeRate created = AppContext.EXCHANGE_RATE_SERVICE.addExchangeRate(request.baseCurrencyCode(), request.targetCurrencyCode(), request.rate());
+            ExchangeRate created = AppContext.EXCHANGE_RATE_SERVICE.addExchangeRate(baseCurrencyCode, targetCurrencyCode, new BigDecimal(rate));
             JsonUtil.write(resp, 201, created);
+        } catch (NumberFormatException e) {
+            JsonUtil.write(resp, 400, Map.of("message", "Invalid rate"));
         } catch (DuplicateException e) {
             JsonUtil.write(resp, 409, Map.of("message", e.getMessage()));
         } catch (RuntimeException e) {

@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.util.Map;
 import tunyaa.currencyexchange.common.AppContext;
 import tunyaa.currencyexchange.common.exception.ExchangeRateNotFoundException;
-import tunyaa.currencyexchange.common.exception.RateNotFoundException;
 import tunyaa.currencyexchange.common.util.JsonUtil;
 
 @WebServlet("/exchangeRate/*")
@@ -37,27 +36,27 @@ public class ExchangeRatePairController extends HttpServlet {
 
     @Override
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String rate = req.getParameter("rate");
 
         String baseCurrencyCode;
         String targetCurrencyCode;
 
-        ExchangeRateUpdateRequest request;
         try {
             String[] pair = parsePair(req.getPathInfo());
             baseCurrencyCode = pair[0];
             targetCurrencyCode = pair[1];
-            request = JsonUtil.read(req.getReader(), ExchangeRateUpdateRequest.class);
-        } catch (IOException e) {
-            JsonUtil.write(resp, 400, Map.of("message", "Invalid JSON"));
-            return;
+            
         } catch (IllegalArgumentException e) {
             JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));
             return;
         }
-        BigDecimal rate = request.rate();
 
         try {
-            ExchangeRate updateExchangeRate = AppContext.EXCHANGE_RATE_SERVICE.updateExchangeRate(baseCurrencyCode, targetCurrencyCode, rate);
+            ExchangeRate updateExchangeRate = AppContext.EXCHANGE_RATE_SERVICE.updateExchangeRate(
+                    baseCurrencyCode,
+                    targetCurrencyCode,
+                    new BigDecimal(rate));
+
             JsonUtil.write(resp, 200, updateExchangeRate);
         } catch (IllegalArgumentException e) {
             JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));

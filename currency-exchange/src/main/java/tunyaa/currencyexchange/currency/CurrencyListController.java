@@ -25,16 +25,18 @@ public class CurrencyListController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        CurrencyRequest request;
+        req.setCharacterEncoding("UTF-8");
+        String name = req.getParameter("name");
+        String code = req.getParameter("code");
+        String sign = req.getParameter("sign");
 
-        try {
-            request = JsonUtil.read(req.getReader(), CurrencyRequest.class);
-        } catch (IOException e) {
-            JsonUtil.write(resp, 400, Map.of("message", "Invalid JSON"));
+        if (name == null || code == null || sign == null) {
+            JsonUtil.write(resp, 400, Map.of("message", "Missing form fields: name, code, sign"));
             return;
         }
+
         try {
-            Currency created = AppContext.CURRENCY_SERVICE.addCurrency(request.name(), request.code(), request.sign());
+            Currency created = AppContext.CURRENCY_SERVICE.addCurrency(name, code, sign);
             JsonUtil.write(resp, 201, created);
         } catch (DuplicateException e) {
             JsonUtil.write(resp, 409, Map.of("message", e.getMessage()));
