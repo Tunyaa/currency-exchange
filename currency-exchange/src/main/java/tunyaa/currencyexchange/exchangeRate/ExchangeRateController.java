@@ -34,7 +34,7 @@ public class ExchangeRateController extends HttpServlet {
         }
 
         try {
-            ExchangeRate created = AppContext.EXCHANGE_RATE_SERVICE.addExchangeRate(request.baseCode(), request.targetCode(), request.rate());
+            ExchangeRate created = AppContext.EXCHANGE_RATE_SERVICE.addExchangeRate(request.baseCurrencyCode(), request.targetCurrencyCode(), request.rate());
             JsonUtil.write(resp, 201, created);
         } catch (DuplicateException e) {
             JsonUtil.write(resp, 409, Map.of("message", e.getMessage()));

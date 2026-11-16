@@ -18,15 +18,15 @@ public class ExchangeRatePairController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String baseCode;
-        String targetCode;
+        String baseCurrencyCode;
+        String targetCurrencyCode;
 
         try {
             String[] pair = parsePair(req.getPathInfo());
-            baseCode = pair[0];
-            targetCode = pair[1];
+            baseCurrencyCode = pair[0];
+            targetCurrencyCode = pair[1];
             ExchangeRate rate = AppContext.EXCHANGE_RATE_SERVICE
-                    .getExchangeRate(baseCode, targetCode);
+                    .getExchangeRate(baseCurrencyCode, targetCurrencyCode);
             JsonUtil.write(resp, 200, rate);
         } catch (ExchangeRateNotFoundException e) {
             JsonUtil.write(resp, 404, Map.of("message", e.getMessage()));
@@ -38,14 +38,14 @@ public class ExchangeRatePairController extends HttpServlet {
     @Override
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String baseCode;
-        String targetCode;
+        String baseCurrencyCode;
+        String targetCurrencyCode;
 
         ExchangeRateUpdateRequest request;
         try {
             String[] pair = parsePair(req.getPathInfo());
-            baseCode = pair[0];
-            targetCode = pair[1];
+            baseCurrencyCode = pair[0];
+            targetCurrencyCode = pair[1];
             request = JsonUtil.read(req.getReader(), ExchangeRateUpdateRequest.class);
         } catch (IOException e) {
             JsonUtil.write(resp, 400, Map.of("message", "Invalid JSON"));
@@ -57,7 +57,7 @@ public class ExchangeRatePairController extends HttpServlet {
         BigDecimal rate = request.rate();
 
         try {
-            ExchangeRate updateExchangeRate = AppContext.EXCHANGE_RATE_SERVICE.updateExchangeRate(baseCode, targetCode, rate);
+            ExchangeRate updateExchangeRate = AppContext.EXCHANGE_RATE_SERVICE.updateExchangeRate(baseCurrencyCode, targetCurrencyCode, rate);
             JsonUtil.write(resp, 200, updateExchangeRate);
         } catch (IllegalArgumentException e) {
             JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));
