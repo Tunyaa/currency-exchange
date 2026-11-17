@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Map;
 import tunyaa.currencyexchange.common.AppContext;
+import tunyaa.currencyexchange.common.exception.CurrencyNotFoundException;
 import tunyaa.currencyexchange.common.exception.DuplicateException;
 import tunyaa.currencyexchange.common.util.JsonUtil;
 
@@ -39,6 +40,8 @@ public class ExchangeRateController extends HttpServlet {
             JsonUtil.write(resp, 400, Map.of("message", "Invalid rate"));
         } catch (DuplicateException e) {
             JsonUtil.write(resp, 409, Map.of("message", e.getMessage()));
+        } catch (CurrencyNotFoundException e) {
+            JsonUtil.write(resp, 404, Map.of("message", e.getMessage()));
         } catch (RuntimeException e) {
             JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));
         }

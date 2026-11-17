@@ -33,6 +33,9 @@ public class ExchangeRateService {
         if (rate == null || rate.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException("Rate must be positive");
         }
+        if (baseCode.equals(targetCode)) {
+            throw new IllegalArgumentException("Cannot create a exchange rate to itself");
+        }
         Currency baseCurrency = currencyRepository.findByCode(baseCode).orElseThrow(() -> new CurrencyNotFoundException(baseCode));
         Currency targetCurrency = currencyRepository.findByCode(targetCode).orElseThrow(() -> new CurrencyNotFoundException(targetCode));
         ExchangeRate exchangeRate = new ExchangeRate(baseCurrency, targetCurrency, rate);
@@ -43,6 +46,9 @@ public class ExchangeRateService {
     public ExchangeRate updateExchangeRate(String baseCode, String targetCode, BigDecimal rate) {
         if (rate == null || rate.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException("Rate must be positive");
+        }
+        if (baseCode.equals(targetCode)) {
+            throw new IllegalArgumentException("Base currency matches the target currency");
         }
         ExchangeRate existing = getExchangeRate(
                 baseCode,
