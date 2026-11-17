@@ -36,7 +36,6 @@ public class ExchangeRatePairController extends HttpServlet {
 
     @Override
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String rate = req.getParameter("rate");
 
         String baseCurrencyCode;
         String targetCurrencyCode;
@@ -45,9 +44,18 @@ public class ExchangeRatePairController extends HttpServlet {
             String[] pair = parsePair(req.getPathInfo());
             baseCurrencyCode = pair[0];
             targetCurrencyCode = pair[1];
-            
+
         } catch (IllegalArgumentException e) {
             JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));
+            return;
+        }
+        String rate = req.getParameter("rate");
+
+        if (baseCurrencyCode == null || targetCurrencyCode == null || rate == null) {
+            JsonUtil.write(resp, 400, Map.of("message", "Missing form fields: "
+                    + "baseCurrencyCode - " + baseCurrencyCode
+                    + ", targetCurrencyCode - " + targetCurrencyCode
+                    + ", rate - " + rate));
             return;
         }
 
@@ -58,6 +66,8 @@ public class ExchangeRatePairController extends HttpServlet {
                     new BigDecimal(rate));
 
             JsonUtil.write(resp, 200, updateExchangeRate);
+        } catch (NumberFormatException e) {
+            JsonUtil.write(resp, 400, Map.of("message", "Invalid rate"));
         } catch (IllegalArgumentException e) {
             JsonUtil.write(resp, 400, Map.of("message", e.getMessage()));
         } catch (ExchangeRateNotFoundException e) {

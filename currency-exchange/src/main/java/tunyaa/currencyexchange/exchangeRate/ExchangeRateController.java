@@ -31,6 +31,10 @@ public class ExchangeRateController extends HttpServlet {
         String rate = req.getParameter("rate");
 
         try {
+            if (baseCurrencyCode == null || targetCurrencyCode == null || rate == null) {
+                JsonUtil.write(resp, 400, Map.of("message", "Missing form fields: baseCurrencyCode, targetCurrencyCode, rate"));
+                return;
+            }
             ExchangeRate created = AppContext.EXCHANGE_RATE_SERVICE.addExchangeRate(baseCurrencyCode, targetCurrencyCode, new BigDecimal(rate));
             JsonUtil.write(resp, 201, created);
         } catch (NumberFormatException e) {
