@@ -1,6 +1,5 @@
 package tunyaa.currencyexchange.exchangerate;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,10 +12,6 @@ import java.util.Optional;
 import tunyaa.currencyexchange.common.exception.DuplicateException;
 import tunyaa.currencyexchange.currency.Currency;
 
-/**
- *
- * @author oldca
- */
 public class JdbcExchangeRateRepository implements ExchangeRateRepository {
 
     private static final String URL = "jdbc:sqlite:exchange.db";

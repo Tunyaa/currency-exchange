@@ -11,18 +11,16 @@ import tunyaa.currencyexchange.common.AppContext;
 import tunyaa.currencyexchange.common.exception.DuplicateException;
 import tunyaa.currencyexchange.common.util.JsonUtil;
 
-/**
- *
- * @author oldca
- */
 @WebServlet("/currencies")
 public class CurrencyListController extends HttpServlet {
 
+    // GET /currencies
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         JsonUtil.write(resp, 200, AppContext.CURRENCY_SERVICE.getCurrencies());
     }
 
+    // POST /currencies
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");

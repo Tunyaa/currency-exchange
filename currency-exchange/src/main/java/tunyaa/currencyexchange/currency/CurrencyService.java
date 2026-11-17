@@ -11,18 +11,18 @@ public class CurrencyService {
         this.currencyRepository = currencyRepository;
     }
 
-//GET /currencies Получение списка валют
+    //GET /currencies Получение списка валют
     public List<Currency> getCurrencies() {
         return currencyRepository.findAll();
     }
-//GET /currency/EUR Получение конкретной валюты
 
+    //GET /currency/EUR Получение валюты
     public Currency getCurrency(String code) {
         return currencyRepository.findByCode(code)
                 .orElseThrow(() -> new CurrencyNotFoundException(code));
     }
-//POST /currencies  Добавление новой валюты в базу
 
+    //POST /currencies  Добавление новой валюты
     public Currency addCurrency(String name, String code, String sign) {
         if (checkCurrencyField(name, code, sign)) {
             return currencyRepository.save(name, code, sign);

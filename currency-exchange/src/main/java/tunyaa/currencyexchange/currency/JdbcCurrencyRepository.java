@@ -11,10 +11,6 @@ import java.util.List;
 import java.util.Optional;
 import tunyaa.currencyexchange.common.exception.DuplicateException;
 
-/**
- *
- * @author oldca
- */
 public class JdbcCurrencyRepository implements CurrencyRepository {
 
     private static final String URL = "jdbc:sqlite:exchange.db";
@@ -23,7 +19,7 @@ public class JdbcCurrencyRepository implements CurrencyRepository {
     public List<Currency> findAll() {
         List<Currency> result = new ArrayList<>();
         String sql = "SELECT id, code, name, sign FROM currencies";
-//         String sql = "SELECT * FROM currencies";
+
         try (Connection conn = DriverManager.getConnection(URL); PreparedStatement statement = conn.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
@@ -35,7 +31,6 @@ public class JdbcCurrencyRepository implements CurrencyRepository {
         return result;
     }
 
-    // TODO ПЕРЕНЕСТИ?
     private Currency mapRow(ResultSet rs) throws SQLException {
         return new Currency(
                 rs.getLong("id"),

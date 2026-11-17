@@ -12,18 +12,16 @@ import tunyaa.currencyexchange.common.AppContext;
 import tunyaa.currencyexchange.common.exception.DuplicateException;
 import tunyaa.currencyexchange.common.util.JsonUtil;
 
-/**
- *
- * @author oldca
- */
 @WebServlet("/exchangeRates")
 public class ExchangeRateController extends HttpServlet {
 
+    // GET /exchangeRates
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         JsonUtil.write(resp, 200, AppContext.EXCHANGE_RATE_SERVICE.getExchangeRates());
     }
 
+    // POST /exchangeRates
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String baseCurrencyCode = req.getParameter("baseCurrencyCode");

@@ -3,17 +3,11 @@ package tunyaa.currencyexchange.common;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- *
- * @author oldca
- */
 @WebListener
 public class DatabaseInitializer implements ServletContextListener {
 

@@ -23,7 +23,8 @@ public class ExchangeService {
         this.exchange = exchange;
     }
 
-    public ExchangeResponse exchange(BigDecimal amount, String from, String to) {
+    // GET /exchange обмен
+    public ExchangeResponse exchange(String from, String to, BigDecimal amount) {
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Amount cannot be 0 or negative.");
         }

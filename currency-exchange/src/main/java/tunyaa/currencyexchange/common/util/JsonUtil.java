@@ -5,10 +5,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Reader;
 
-/**
- *
- * @author oldca
- */
 public class JsonUtil {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();

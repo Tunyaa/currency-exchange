@@ -7,10 +7,6 @@ import tunyaa.currencyexchange.common.exception.ExchangeRateNotFoundException;
 import tunyaa.currencyexchange.currency.Currency;
 import tunyaa.currencyexchange.currency.CurrencyRepository;
 
-/**
- *
- * @author oldca
- */
 public class ExchangeRateService {
 
     private final ExchangeRateRepository exchangeRateRepository;
@@ -21,18 +17,18 @@ public class ExchangeRateService {
         this.currencyRepository = currencyRepository;
     }
 
-//    GET /exchangeRates  Получение списка всех обменных курсов
+    // GET /exchangeRates  Получение списка всех обменных курсов
     public List<ExchangeRate> getExchangeRates() {
         return exchangeRateRepository.findAll();
     }
 
-//GET /exchangeRate/USD&RUB  Получение конкретного обменного курса
+    // GET /exchangeRate/USD&RUB  Получение обменного курса
     public ExchangeRate getExchangeRate(String baseCode, String targetCode) {
         return exchangeRateRepository.findByPair(baseCode, targetCode)
                 .orElseThrow(() -> new ExchangeRateNotFoundException("ExchangeRate not found! " + baseCode + " - " + targetCode + "."));
     }
 
-//POST /exchangeRates  Добавление нового обменного курса в базу
+    // POST /exchangeRates  Добавление нового обменного курса в базу
     public ExchangeRate addExchangeRate(String baseCode, String targetCode, BigDecimal rate) {
         if (rate == null || rate.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException("Rate must be positive");
@@ -43,7 +39,7 @@ public class ExchangeRateService {
         return exchangeRateRepository.save(exchangeRate);
     }
 
-//PATCH /exchangeRate/USDRUB  Обновление существующего в базе обменного курса
+    // PATCH /exchangeRate/USDRUB  Обновление существующего в базе обменного курса
     public ExchangeRate updateExchangeRate(String baseCode, String targetCode, BigDecimal rate) {
         if (rate == null || rate.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException("Rate must be positive");

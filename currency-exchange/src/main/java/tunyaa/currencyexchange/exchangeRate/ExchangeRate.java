@@ -3,10 +3,6 @@ package tunyaa.currencyexchange.exchangerate;
 import java.math.BigDecimal;
 import tunyaa.currencyexchange.currency.Currency;
 
-/**
- *
- * @author oldca
- */
 public final class ExchangeRate {
 
     private final Long id;

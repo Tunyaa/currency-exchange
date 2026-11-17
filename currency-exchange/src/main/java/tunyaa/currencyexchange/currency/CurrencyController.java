@@ -11,23 +11,20 @@ import tunyaa.currencyexchange.common.AppContext;
 import tunyaa.currencyexchange.common.exception.CurrencyNotFoundException;
 import tunyaa.currencyexchange.common.util.JsonUtil;
 
-/**
- *
- * @author oldca
- */
 @WebServlet("/currency/*")
 public class CurrencyController extends HttpServlet {
 
+    // GET /currency/EUR
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String pathInfo = req.getPathInfo();   // "/EUR" или null
+        String pathInfo = req.getPathInfo();
 
         if (pathInfo == null || pathInfo.equals("/")) {
             JsonUtil.write(resp, 400, Map.of("message", "Code required"));
             return;
         }
 
-        String code = pathInfo.substring(1);   // убираем "/"
+        String code = pathInfo.substring(1);
         try {
             Currency currency = AppContext.CURRENCY_SERVICE.getCurrency(code);
             JsonUtil.write(resp, 200, currency);

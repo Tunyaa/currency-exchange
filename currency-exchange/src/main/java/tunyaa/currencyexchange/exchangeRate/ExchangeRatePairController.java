@@ -15,6 +15,7 @@ import tunyaa.currencyexchange.common.util.JsonUtil;
 @WebServlet("/exchangeRate/*")
 public class ExchangeRatePairController extends HttpServlet {
 
+    // GET /exchangeRate/USDRUB
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String baseCurrencyCode;
@@ -34,6 +35,7 @@ public class ExchangeRatePairController extends HttpServlet {
         }
     }
 
+    // PATCH /exchangeRate/USDRUB
     @Override
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

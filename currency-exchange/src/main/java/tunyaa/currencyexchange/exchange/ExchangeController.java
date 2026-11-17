@@ -15,6 +15,7 @@ import tunyaa.currencyexchange.common.util.JsonUtil;
 @WebServlet("/exchange")
 public class ExchangeController extends HttpServlet {
 
+    // GET /exchange?from=BASE_CURRENCY_CODE&to=TARGET_CURRENCY_CODE&amount=$AMOUNT
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String from = req.getParameter("from");
@@ -28,7 +29,7 @@ public class ExchangeController extends HttpServlet {
 
         try {
             BigDecimal amount = new BigDecimal(amountStr);
-            ExchangeResponse exchangeResponse = AppContext.EXCHANGE_SERVICE.exchange(amount, from, to);
+            ExchangeResponse exchangeResponse = AppContext.EXCHANGE_SERVICE.exchange(from, to, amount);
             JsonUtil.write(resp, 200, exchangeResponse);
             return;
         } catch (NumberFormatException e) {

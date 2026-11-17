@@ -1,17 +1,11 @@
 package tunyaa.currencyexchange.exchangerate;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import tunyaa.currencyexchange.currency.Currency;
 
-/**
- *
- * @author oldca
- */
 public class InMemoryExchangeRateRepository implements ExchangeRateRepository {
 
     private final Map<Long, ExchangeRate> storage = new HashMap<>();

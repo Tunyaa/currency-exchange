@@ -1,9 +1,5 @@
 package tunyaa.currencyexchange.currency;
 
-/**
- *
- * @author oldca
- */
 public final class Currency {
 
     private final Long id;

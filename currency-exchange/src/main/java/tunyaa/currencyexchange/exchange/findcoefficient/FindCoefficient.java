@@ -6,10 +6,6 @@ import java.util.List;
 import tunyaa.currencyexchange.common.exception.RateNotFoundException;
 import tunyaa.currencyexchange.exchangerate.ExchangeRate;
 
-/**
- *
- * @author oldca
- */
 public class FindCoefficient {
 
     public BigDecimal find(List<ExchangeRate> rates, String from, String to) {
@@ -90,24 +86,4 @@ public class FindCoefficient {
         throw new RateNotFoundException(from, to);
 
     }
-//    private BigDecimal findTransit(List<ExchangeRate> rates, String from, String to) {
-//        for (ExchangeRate first : rates) {
-//            if (!first.getBaseCurrency().getCode().equals(from)) {
-//                continue;
-//            }
-//            String middle = first.getTargetCurrency().getCode();
-//
-//            for (ExchangeRate second : rates) {
-//                if (!second.getBaseCurrency().getCode().equals(middle)) {
-//                    continue;
-//                }
-//                if (!second.getTargetCurrency().getCode().equals(to)) {
-//                    continue;
-//                }
-//
-//                return first.getRate().multiply(second.getRate());
-//            }
-//        }
-//        return null;
-//    }
 }
