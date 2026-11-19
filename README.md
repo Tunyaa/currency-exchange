@@ -47,14 +47,23 @@ curl http://193.124.80.247:8080/exchange/currencies
 
 Endpoints
 Метод	Путь	Тело (form-urlencoded)	Успех	Ошибки
+
 GET	/currencies	—	200 JSON-массив	—
+
 GET	/currency/{code}	—	200 JSON-объект	404 если не найдено
+
 POST	/currencies	name, code, sign	201 JSON-объект	400 (валидация), 409 (дубликат code)
+
 GET	/exchangeRates	—	200 JSON-массив	—
+
 GET	/exchangeRate/{pair}	—	200 JSON-объект	404 если пары нет
+
 POST	/exchangeRates	baseCurrencyCode, targetCurrencyCode, rate	201 JSON-объект	400, 409 (дубликат пары)
+
 PATCH	/exchangeRate/{pair}	rate	200 JSON-объект	400, 404
+
 GET	/exchange?from=&to=&amount=	—	200 JSON-объект	400 (валидация), 404 (курс не найден)
+
 
 Примеры запросов:
 Создать валюту
@@ -104,48 +113,17 @@ json
 Если ни один сценарий не подходит — 404.
 
 Коды ответов
+
 Код	Когда
+
 200	Успешный GET/PATCH
+
 201	Успешное создание (POST)
+
 400	Неверные параметры: отсутствуют поля формы, пустые, невалидный rate/amount, отрицательный rate, отрицательный amount, from == to
+
 404	Сущность не найдена (валюта, курс, пара)
+
 409	Дубликат (code валюты или пара курса уже существует)
+
 500	Внутренняя ошибка сервера (недоступна БД, непойманное исключение)
-
-Структура проекта
-
-src/main/java/tunyaa/currencyexchange/
-├── common/
-│   ├── AppContext.java              # глобальные зависимости (репозитории, сервисы)
-│   ├── DatabaseInitializer.java     # создаёт таблицы при старте приложения
-│   ├── exception/
-│   │   ├── CurrencyNotFoundException.java
-│   │   ├── ExchangeRateNotFoundException.java
-│   │   ├── RateNotFoundException.java
-│   │   └── DuplicateException.java
-│   └── util/
-│       └── JsonUtil.java            # сериализация JSON
-├── currency/
-│   ├── Currency.java
-│   ├── CurrencyController.java      # GET /currency/{code}
-│   ├── CurrencyListController.java  # GET, POST /currencies
-│   ├── CurrencyRepository.java
-│   ├── CurrencyService.java
-│   ├── InMemoryCurrencyRepository.java  # для тестов
-│   └── JdbcCurrencyRepository.java
-├── exchangerate/
-│   ├── ExchangeRate.java
-│   ├── ExchangeRateController.java      # GET, POST /exchangeRates
-│   ├── ExchangeRatePairController.java  # GET, PATCH /exchangeRate/{pair}
-│   ├── ExchangeRateRepository.java
-│   ├── ExchangeRateService.java
-│   ├── InMemoryExchangeRateRepository.java
-│   └── JdbcExchangeRateRepository.java
-└── exchange/
-    ├── Exchange.java                    # калькулятор (amount * coefficient)
-    ├── ExchangeController.java          # GET /exchange
-    ├── ExchangeResponse.java            # DTO ответа
-    ├── ExchangeService.java             # оркестрация
-    └── FindCoefficient.java             # поиск коэффициента (прямой/обратный/транзит)
-
-
